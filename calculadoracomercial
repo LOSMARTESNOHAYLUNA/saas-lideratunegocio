@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Cuántos clientes estás perdiendo? — Lidera tu Negocio</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#1a0f2e; --surface:#221442; --surface2:#2d1a52;
+  --accent:#ee46bc; --accent3:#3e2b86;
+  --success:#22d3a3; --warning:#f59e0b; --danger:#f43f5e;
+  --text:#f5f0ff; --text-muted:#a08abf;
+  --border:rgba(238,70,188,.15); --radius:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  padding:24px 16px 60px;overflow-x:hidden;position:relative;
+}
+body::before{content:'';position:fixed;top:-30%;left:-20%;width:60%;height:60%;
+  background:radial-gradient(ellipse,rgba(238,70,188,.09) 0%,transparent 70%);pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;bottom:-20%;right:-10%;width:50%;height:50%;
+  background:radial-gradient(ellipse,rgba(62,43,134,.2) 0%,transparent 70%);pointer-events:none;z-index:0;}
+#app{width:100%;max-width:660px;position:relative;z-index:1;}
+
+.hdr{text-align:center;margin-bottom:30px;animation:fadeDown .6s ease both;}
+.logo{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);
+  margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.logo::before,.logo::after{content:'';display:block;width:28px;height:1px;background:var(--accent);opacity:.5;}
+h1{font-size:clamp(22px,5vw,34px);font-weight:800;line-height:1.18;letter-spacing:-.02em;margin-bottom:10px;}
+h1 span{color:var(--accent);}
+.subtitle{font-size:14px;color:var(--text-muted);line-height:1.65;font-weight:300;max-width:460px;margin:0 auto;}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.5);animation:fadeUp .5s ease .1s both;}
+.prog{height:3px;background:var(--border);}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));
+  border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.body{padding:26px 28px;}
+.foot{padding:14px 28px 22px;border-top:1px solid var(--border);background:var(--surface);}
+
+.badge{display:inline-flex;align-items:center;gap:6px;
+  background:rgba(238,70,188,.1);border:1px solid rgba(238,70,188,.22);
+  border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+.p-icon{font-size:30px;display:block;margin-bottom:10px;}
+.p-title{font-size:19px;font-weight:800;margin-bottom:6px;}
+.p-desc{font-size:13.5px;color:var(--text-muted);line-height:1.6;margin-bottom:6px;}
+.p-sub{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:16px;}
+
+.where{background:rgba(62,43,134,.18);border:1px solid rgba(62,43,134,.45);
+  border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.8;
+  color:var(--text-muted);margin-bottom:18px;}
+.where strong{color:var(--text);}
+.where-ttl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;
+  color:#9b8abf;margin-bottom:9px;display:flex;align-items:center;gap:5px;}
+
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--text-muted);margin-bottom:7px;}
+.inp{width:100%;background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);padding:13px 16px;border-radius:10px;font-size:15px;
+  font-family:'Poppins',sans-serif;outline:none;transition:border-color .18s;}
+.inp:focus{border-color:var(--accent);}
+.inp::placeholder{color:var(--text-muted);}
+
+.ins{border-radius:10px;padding:12px 15px;font-size:13.5px;line-height:1.6;
+  margin-top:12px;animation:bubbleIn .3s ease both;display:flex;align-items:flex-start;gap:9px;}
+.ins-i{flex-shrink:0;font-size:15px;margin-top:2px;}
+.ins.g{background:rgba(34,211,163,.08);border:1px solid rgba(34,211,163,.25);color:#a7f3d0;}
+.ins.w{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);color:#fcd34d;}
+.ins.b{background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.25);color:#fda4af;}
+.ins.i{background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);}
+
+.tip{background:rgba(62,43,134,.15);border:1px solid rgba(62,43,134,.3);
+  border-radius:10px;padding:12px 15px;font-size:13px;color:var(--text-muted);
+  line-height:1.65;margin-top:10px;}
+
+.btn-row{display:flex;gap:10px;}
+.btn{padding:12px 22px;border-radius:10px;font-size:14px;font-family:'Poppins',sans-serif;
+  font-weight:700;cursor:pointer;transition:all .18s ease;border:none;white-space:nowrap;}
+.btn-p{background:var(--accent);color:#fff;flex:1;}
+.btn-p:hover{background:#f568cc;transform:translateY(-1px);}
+.btn-s{background:var(--surface2);color:var(--text-muted);border:1px solid var(--border);}
+.btn-s:hover{border-color:var(--accent);color:var(--accent);}
+
+/* DIAGNOSTIC */
+.diag-hero{
+  background:linear-gradient(135deg,rgba(244,63,94,.12),rgba(238,70,188,.08));
+  border:1px solid rgba(244,63,94,.25);border-radius:14px;
+  padding:22px;text-align:center;margin-bottom:20px;
+}
+.dh-emoji{font-size:36px;margin-bottom:8px;display:block;}
+.dh-pct{font-size:54px;font-weight:800;color:var(--danger);line-height:1;}
+.dh-lbl{font-size:15px;font-weight:700;margin-top:6px;}
+.dh-sub{font-size:13px;color:var(--text-muted);margin-top:6px;line-height:1.6;}
+
+.sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;
+  color:var(--text-muted);margin:22px 0 12px;display:flex;align-items:center;gap:8px;}
+.sec::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.funnel-row{display:grid;grid-template-columns:10px 105px 1fr 52px;
+  gap:8px;align-items:center;margin-bottom:8px;}
+.fdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.flbl{font-size:12px;font-weight:600;color:var(--text);line-height:1.3;}
+.fbar-w{background:rgba(255,255,255,.05);border-radius:6px;height:22px;overflow:hidden;position:relative;}
+.fbar{height:100%;border-radius:6px;position:absolute;left:0;top:0;
+  transition:width .7s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;padding-left:8px;}
+.fbar span{font-size:11px;font-weight:700;color:rgba(255,255,255,.85);white-space:nowrap;}
+.frate{font-size:12px;font-weight:700;text-align:right;white-space:nowrap;}
+.frate.g{color:var(--success);} .frate.w{color:var(--warning);} .frate.b{color:var(--danger);}
+
+.leak{background:var(--surface2);border:1px solid rgba(244,63,94,.2);
+  border-radius:12px;padding:15px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;}
+.leak-n{background:rgba(244,63,94,.15);border:1px solid rgba(244,63,94,.3);
+  border-radius:8px;padding:6px 10px;text-align:center;flex-shrink:0;min-width:48px;}
+.ln-lbl{font-size:9px;color:var(--danger);font-weight:700;text-transform:uppercase;letter-spacing:.08em;}
+.ln-v{font-size:18px;font-weight:800;color:var(--danger);line-height:1.1;}
+.lb-ttl{font-size:14px;font-weight:700;margin-bottom:3px;}
+.lb-txt{font-size:13px;color:var(--text-muted);line-height:1.55;}
+.lb-money{font-size:12px;color:var(--danger);font-weight:600;margin-top:5px;}
+
+.tbl{width:100%;border-collapse:collapse;margin-bottom:6px;}
+.tbl th{background:var(--surface2);padding:9px 12px;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);text-align:left;}
+.tbl th:last-child{text-align:right;}
+.tbl td{padding:10px 12px;font-size:13px;border-bottom:1px solid var(--border);}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td:last-child{text-align:right;font-weight:700;}
+.tbl .hl td{background:rgba(238,70,188,.06);}
+.tbl .hl td:last-child{color:var(--accent);}
+.tag-now{font-size:10px;background:rgba(255,255,255,.07);border-radius:4px;padding:2px 6px;color:var(--text-muted);margin-left:4px;}
+.tag-up{font-size:10px;background:rgba(34,211,163,.12);border-radius:4px;padding:2px 6px;color:var(--success);margin-left:4px;}
+
+.callout{background:linear-gradient(135deg,rgba(238,70,188,.1),rgba(62,43,134,.18));
+  border:1px solid rgba(238,70,188,.3);border-radius:14px;padding:22px;text-align:center;margin:20px 0;}
+.callout .ce{font-size:30px;margin-bottom:10px;display:block;}
+.callout .ct{font-size:17px;font-weight:800;margin-bottom:8px;}
+.callout .cb{font-size:14px;color:var(--text-muted);line-height:1.7;max-width:450px;margin:0 auto;}
+.callout strong{color:var(--text);}
+
+/* LEAD */
+.lead-intro{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:20px;}
+.lead-intro strong{color:var(--text);}
+.skip-btn{background:none;border:none;color:var(--text-muted);font-size:12px;
+  font-family:'Poppins',sans-serif;cursor:pointer;text-decoration:underline;
+  text-underline-offset:3px;display:block;margin:14px auto 0;text-align:center;}
+.skip-btn:hover{color:var(--text);}
+
+/* THANKS */
+.thanks{text-align:center;padding:8px 0;}
+.thanks .ti{font-size:46px;margin-bottom:12px;display:block;}
+.thanks .tt{font-size:21px;font-weight:800;margin-bottom:8px;}
+.thanks .tb{font-size:14px;color:var(--text-muted);line-height:1.7;}
+
+.book-block{background:linear-gradient(135deg,rgba(238,70,188,.08),rgba(62,43,134,.15));
+  border:1px solid rgba(238,70,188,.25);border-radius:14px;padding:22px;text-align:center;margin-top:20px;}
+.book-block p{font-size:14px;color:var(--text-muted);line-height:1.65;margin-bottom:16px;}
+.book-block strong{color:var(--text);}
+.btn-book{display:inline-block;background:var(--accent);color:#fff;padding:14px 28px;
+  border-radius:10px;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;
+  text-decoration:none;cursor:pointer;border:none;transition:all .18s ease;}
+.btn-book:hover{background:#f568cc;transform:translateY(-2px);box-shadow:0 8px 24px rgba(238,70,188,.35);}
+.btn-dl{display:inline-block;background:transparent;border:1px solid rgba(238,70,188,.4);
+  color:var(--accent);padding:12px 22px;border-radius:10px;font-family:'Poppins',sans-serif;
+  font-size:14px;font-weight:600;cursor:pointer;transition:all .18s ease;margin-top:10px;}
+.btn-dl:hover{background:rgba(238,70,188,.08);}
+
+.ai-block{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;margin-top:20px;}
+.ai-lbl{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:12px;opacity:.8;}
+.ai-lbl::before{content:'✦';}
+.ai-txt{font-size:13.5px;line-height:1.75;color:var(--text);}
+.ai-txt strong{color:var(--accent);}
+.gen{font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:8px;padding:6px 0;}
+.spin{width:14px;height:14px;border:2px solid rgba(238,70,188,.3);border-top-color:var(--accent);
+  border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+@keyframes bubbleIn{from{opacity:0;transform:scale(.94) translateY(4px);}to{opacity:1;transform:scale(1) translateY(0);}}
+
+@media(max-width:520px){
+  .funnel-row{grid-template-columns:10px 82px 1fr 44px;}
+  .body{padding:20px;}
+  .foot{padding:12px 20px 20px;}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const WEB3FORMS_KEY = '16a6c936-0dc8-4754-bd90-f72ad0f922ae';
+const BOOKING_URL   = 'https://api.leadconnectorhq.com/widget/bookings/carla-recurrente-lideratunegocio';
+const GHL_WEBHOOK   = 'https://services.leadconnectorhq.com/hooks/qmiZ6dvbYjR4c3xw6Q9I/webhook-trigger/985e45b5-15e4-41fc-ac14-650bb84904ef';
+
+/* ═══ FASES ═══ */
+const PHASES = [
+  {
+    id:1, key:'leads',
+    icon:'📥', name:'Leads recibidos',
+    question:'¿Cuántos leads o contactos nuevos llegaron este mes?',
+    desc:'Cualquier persona que mostró interés en tu servicio: rellenó un formulario, llamó, escribió por WhatsApp, fue referida por un cliente...',
+    where:`
+<strong>Si tienes publicidad activa (Meta/Google Ads):</strong> Abre tu panel de campañas y busca la columna "Clientes potenciales" o "Leads". Es el número total del período.<br><br>
+<strong>Si usas formulario en tu web:</strong> Mira tu bandeja de email (cuántos emails de "nuevo mensaje" recibiste), tu CRM, o la plataforma de tu web (Wix, WordPress, etc.).<br><br>
+<strong>Si te contactan por WhatsApp:</strong> Abre WhatsApp Business, entra en cada conversación y cuenta las que empezaron este mes con alguien nuevo.<br><br>
+<strong>Si no tienes registro claro:</strong> Haz una estimación honesta. Cuenta llamadas nuevas + emails de consulta + mensajes nuevos. Si no puedes, empieza a apuntarlo esta semana.`,
+    placeholder:'Ej: 40',
+    bench:null,
+    tip:'Si no tienes claro este número, ahí está el primer problema: lo que no se mide no se puede mejorar. Empieza esta semana con una simple hoja de cálculo.'
+  },
+  {
+    id:2, key:'primer_contacto',
+    icon:'⚡', name:'Primer contacto <24h',
+    question:'¿A cuántos de esos leads contactaste o respondiste en menos de 24 horas?',
+    desc:'El tiempo de respuesta lo cambia todo. Un lead que espera más de 24 horas ya está comparando con tu competencia.',
+    where:`
+<strong>Revisa tu historial de respuestas:</strong> Entra en tu email o WhatsApp y mira la diferencia de tiempo entre el mensaje del lead y tu respuesta. ¿Fue el mismo día? ¿Al día siguiente? ¿Más tarde?<br><br>
+<strong>Si usas CRM:</strong> Busca el campo "Primera actividad" o "Primer contacto" y compáralo con la fecha de entrada del lead.<br><br>
+<strong>Si atiendes por teléfono:</strong> ¿Cuántas llamadas perdidas devolviste el mismo día? Eso también cuenta.<br><br>
+<strong>Truco para ser honesto:</strong> Si no recuerdas exactamente, piensa en cuántos leads te han llegado este mes y cuántos respondiste enseguida vs. los que "quedaron pendientes" y tardaste días. Esa proporción es tu realidad.`,
+    placeholder:'Ej: 28',
+    bench:0.80, benchLabel:'mínimo 80% en menos de 24h',
+    tip:'Configura una respuesta automática en tu email o WhatsApp que diga "Hemos recibido tu consulta y te responderemos en menos de X horas". Solo eso ya mejora la percepción del cliente.'
+  },
+  {
+    id:3, key:'segunda_llamada',
+    icon:'🔄', name:'Segunda llamada',
+    question:'¿A cuántos leads volviste a llamar o escribir cuando no respondieron al primer contacto?',
+    desc:'Este es el punto donde más dinero se pierde en casi todos los negocios. El lead no responde, y nadie vuelve a intentarlo.',
+    where:`
+<strong>Revisa tus llamadas salientes:</strong> En el teléfono, filtra las llamadas del mes y busca contactos a los que hayas llamado más de una vez. ¿Cuántos son?<br><br>
+<strong>Revisa tu WhatsApp o email:</strong> ¿Cuántas conversaciones tienen dos o más mensajes tuyos seguidos sin respuesta del cliente? Eso son los seguimientos que sí hiciste.<br><br>
+<strong>CRM (si tienes uno):</strong> Cuenta las actividades de tipo "segundo intento" o "llamada de seguimiento".<br><br>
+<strong>Si la respuesta es muy baja o cero:</strong> No te preocupes, es lo más habitual. La mayoría de equipos contacta una vez y si no hay respuesta, pasa al siguiente. Estás aquí precisamente para cambiarlo.`,
+    placeholder:'Ej: 12',
+    bench:0.70, benchLabel:'al menos 70% de los leads',
+    tip:'La mayoría de las ventas no se cierran en el primer contacto. Con solo añadir un segundo intento de forma sistemática, muchos negocios ven crecer sus cierres un 20-30%.'
+  },
+  {
+    id:4, key:'presupuesto',
+    icon:'📄', name:'Presupuesto enviado',
+    question:'¿A cuántos leads enviaste un presupuesto o propuesta formal?',
+    desc:'Un presupuesto enviado es una señal muy clara: ese lead es real, tiene interés y está evaluando si contratarte. A partir de aquí, el seguimiento lo es todo.',
+    where:`
+<strong>Busca en tu email "Enviados":</strong> Filtra por palabras como "presupuesto", "propuesta", "cotización", "tarifa" o "precio" en el período del mes.<br><br>
+<strong>Si usas herramientas de presupuestos</strong> (PandaDoc, Better Proposals, o incluso Word/PDF enviados por email): cuenta los documentos que mandaste.<br><br>
+<strong>CRM:</strong> Etapa "Propuesta enviada" o "Presupuesto" creadas este mes.<br><br>
+<strong>Si mandas precios de forma verbal o por WhatsApp:</strong> Cuenta esas conversaciones también. Cualquier momento en que le informaste del precio a un lead cuenta.<br><br>
+<strong>Consejo:</strong> Si mandas precios sin documentar, empieza a enviarlos siempre por escrito. Los leads que tienen algo tangible cierran mucho más y te da un registro claro.`,
+    placeholder:'Ej: 18',
+    bench:0.60, benchLabel:'al menos 60% de los leads',
+    tip:'Si llegas a muchos leads pero envías pocos presupuestos, el cuello de botella está en la cualificación o en la rapidez de respuesta, no en la oferta en sí.'
+  },
+  {
+    id:5, key:'seguimiento_presupuesto',
+    icon:'📞', name:'Seguimiento del presupuesto',
+    question:'¿A cuántos les llamaste o escribiste para hacer seguimiento después de enviar el presupuesto?',
+    desc:'El presupuesto llega, el cliente dice "lo miro", y... silencio. ¿Cuántas veces volviste a contactar para saber qué les pareció?',
+    where:`
+<strong>Sé totalmente honesto aquí — es el dato más importante:</strong><br><br>
+De todos los presupuestos que enviaste, ¿a cuántos clientes llamaste o escribiste después para preguntar "¿has podido revisar la propuesta?" o "¿tienes alguna duda sobre lo que te envié?"<br><br>
+<strong>Cómo buscarlo:</strong> En tu email o WhatsApp, busca conversaciones donde hubo un presupuesto enviado y tú volviste a escribir días después. Eso es un seguimiento.<br><br>
+<strong>CRM:</strong> Actividades de "seguimiento de propuesta" registradas en el período.<br><br>
+<strong>La respuesta más habitual es un número muy bajo.</strong> La mayoría de empresas manda el presupuesto y espera a que el cliente llame. El cliente también espera. Y la venta muere por ausencia, no por rechazo.`,
+    placeholder:'Ej: 5',
+    bench:0.80, benchLabel:'al menos 80% de los presupuestos',
+    tip:'Una llamada o mensaje de seguimiento 48-72h después del presupuesto puede incrementar tu tasa de cierre entre un 20% y un 40%. Es la acción con el mejor ROI de todo tu proceso comercial.'
+  },
+  {
+    id:6, key:'cerradas',
+    icon:'✅', name:'Ventas cerradas',
+    question:'¿Cuántos leads acabaron contratando tu servicio o comprando?',
+    desc:'El resultado final del proceso. Cuántos de los leads que llegaron este mes se convirtieron en clientes de verdad.',
+    where:`
+<strong>Contratos o acuerdos firmados:</strong> ¿Cuántos contratos nuevos firmaste este mes?<br><br>
+<strong>Facturación:</strong> Cuenta los clientes nuevos a los que emitiste factura este mes (no incluyas renovaciones de clientes existentes).<br><br>
+<strong>Pagos recibidos:</strong> Revisa tu banco o plataforma de pago (Stripe, PayPal, Bizum, transferencias...) y cuenta los primeros pagos de clientes nuevos.<br><br>
+<strong>CRM:</strong> Negocios en estado "Cerrado ganado" del mes.<br><br>
+<strong>Importante para el cálculo:</strong> Introduce también el precio medio de cada venta (o el valor del contrato típico). Con ese dato calculamos el impacto económico real de cada mejora.`,
+    placeholder:'Ej: 6',
+    priceInput:true, priceLabel:'Valor medio de cada venta o contrato (€)', pricePlaceholder:'Ej: 800',
+    bench:0.35, benchLabel:'35% de los presupuestos enviados',
+    tip:'Si tu tasa de cierre es muy baja, el problema casi nunca es el precio. Casi siempre es que el lead se enfrió porque nadie hizo seguimiento.'
+  },
+  {
+    id:7, key:'postventa',
+    icon:'🌟', name:'Seguimiento post-venta',
+    question:'¿A cuántos clientes cerrados les escribiste o llamaste de forma proactiva después de empezar a trabajar juntos?',
+    desc:'No para resolver problemas (eso es soporte), sino para preguntar cómo van, si están contentos, si necesitan algo más. Es tu mayor fuente de referidos.',
+    where:`
+<strong>Esto no es gestionar incidencias:</strong> No cuenta responder a un problema que el cliente te trajo. Cuenta cuando TÚ tomaste la iniciativa de contactar.<br><br>
+<strong>Cómo buscarlo:</strong> Revisa tu WhatsApp o email y busca mensajes donde tú escribiste primero a un cliente activo solo para hacer seguimiento o preguntar cómo les va con el servicio.<br><br>
+<strong>Encuestas:</strong> Si envías encuestas de satisfacción (Typeform, Google Forms...), ¿a cuántos clientes las mandaste este mes?<br><br>
+<strong>Llamadas de revisión:</strong> ¿Tienes agendadas llamadas de revisión con clientes a los 30 o 60 días de empezar? Cuenta esas.<br><br>
+<strong>Si la respuesta es cero:</strong> Es lo más habitual. Y también la mayor oportunidad: cada cliente satisfecho al que no cuidas activamente es un referido que estás dejando escapar.`,
+    placeholder:'Ej: 4',
+    bench:0.80, benchLabel:'al menos 80% de los clientes',
+    tip:'Un simple mensaje a los 30 días diciendo "¿cómo está yendo todo?" genera más referidos que cualquier campaña de marketing. Y no cuesta nada.'
+  }
+];
+
+/* ═══ ESTADO ═══ */
+let S = {
+  screen:'intro',
+  idx:0,
+  data: PHASES.map(()=>({v:null,price:null})),
+  lead:{name:'',email:'',phone:''},
+  aiText:''
+};
+const app = document.getElementById('app');
+
+/* ═══ HELPERS ═══ */
+function v(i)   { return S.data[i]?.v ?? 0; }
+function p(i)   { return S.data[i]?.price ?? 0; }
+function rate(i){ if(i===0||!v(i-1))return null; return Math.min(1, v(i)/v(i-1)); }
+function fmt(n) { if(n===null||n===undefined||isNaN(n))return'—'; return n.toLocaleString('es-ES',{maximumFractionDigits:1}); }
+function fmtE(n){ if(!n&&n!==0)return'—'; return '€'+Math.round(n).toLocaleString('es-ES'); }
+function fmtP(n){ if(n===null||isNaN(n))return'—'; return (n*100).toFixed(1)+'%'; }
+function hcls(r,b){ if(!b||r===null)return''; const x=r/b; return x>=.9?'g':x>=.6?'w':'b'; }
+function hclr(r,b){ const c=hcls(r,b); return c==='g'?'var(--success)':c==='w'?'var(--warning)':c==='b'?'var(--danger)':'var(--accent)'; }
+
+function revenue()    { return v(5)*p(5); }
+function moneyLost()  {
+  const seg=v(4), cer=v(5), pre=v(3), px=p(5);
+  if(!seg||!cer||!px)return 0;
+  const closeRate=cer/seg;
+  const idealSeg=Math.round(pre*.80);
+  const extra=Math.max(0,Math.round((idealSeg-seg)*closeRate));
+  return extra*px;
+}
+function leakFollowup(){ return Math.max(0,Math.round(v(1)*.70)-v(2)); }
+function leakPresup()  { return Math.max(0,Math.round(v(3)*.80)-v(4)); }
+
+function simRev(pct){
+  const l=v(0),pc=v(1),sl=v(2),pr=v(3),sg=v(4),ce=v(5),px=p(5);
+  if(!l||!px)return null;
+  const r1=l>0?pc/l:0, r2=pc>0?sl/pc:0, r3=sl>0?pr/sl:0, r4=pr>0?sg/pr:0, r5=sg>0?ce/sg:0;
+  const nr2=Math.min(1,r2*(1+pct/100)), nr4=Math.min(1,r4*(1+pct/100));
+  const ns=pc*nr2, np=ns*r3, nsg=np*nr4, nc=nsg*r5;
+  return Math.round(nc*px);
+}
+
+/* ═══ RENDER ═══ */
+function render(){
+  window.scrollTo({top:0,behavior:'smooth'});
+  if     (S.screen==='intro')      rIntro();
+  else if(S.screen==='phases')     rPhase();
+  else if(S.screen==='diagnostic') rDiag();
+  else if(S.screen==='lead')       rLead();
+  else if(S.screen==='thanks')     rThanks();
+}
+
+/* ─── INTRO ─── */
+function rIntro(){
+  app.innerHTML=`
+  <div class="hdr">
+    <div class="logo">Lidera tu Negocio</div>
+    <h1>¿Cuántos clientes estás<br><span>perdiendo sin saberlo?</span></h1>
+    <p class="subtitle">7 preguntas para descubrir dónde se escapa el dinero de tu proceso de ventas.</p>
+  </div>
+  <div class="card">
+    <div class="prog"><div class="prog-fill" style="width:3%"></div></div>
+    <div class="body">
+      <div class="badge">Cómo funciona</div>
+      <div style="display:flex;flex-direction:column;gap:11px;margin-bottom:22px">
+        <div class="ins i"><span class="ins-i">1️⃣</span><div>Respondes <strong>7 preguntas sobre tu seguimiento de leads</strong>. Menos de 4 minutos.</div></div>
+        <div class="ins i"><span class="ins-i">2️⃣</span><div>Ves exactamente <strong>en qué paso pierdes los leads</strong> y cuánto dinero representa cada fuga.</div></div>
+        <div class="ins i"><span class="ins-i">3️⃣</span><div>Te mostramos qué pasaría si mejoraras <strong>solo un 3% el seguimiento</strong>.</div></div>
+        <div class="ins w"><span class="ins-i">💡</span><div>En cada pregunta te decimos <strong>exactamente dónde encontrar el dato</strong> si no lo tienes claro.</div></div>
+      </div>
+      <button class="btn btn-p" style="width:100%;padding:15px" id="sBtn">Empezar ahora →</button>
+    </div>
+  </div>`;
+  document.getElementById('sBtn').onclick=()=>{S.screen='phases';S.idx=0;render();};
+}
+
+/* ─── PHASE ─── */
+function rPhase(){
+  const ph=PHASES[S.idx];
+  const d=S.data[S.idx];
+  const pct=Math.round(((S.idx+1)/(PHASES.length+1))*100);
+  const r=rate(S.idx);
+  let ins='';
+  if(d.v!==null){
+    if(S.idx===0){ins=`<div class="ins i"><span class="ins-i">📊</span><div>Tu punto de partida: <strong>${fmt(d.v)} leads</strong> este mes.</div></div>`;}
+    else if(r!==null){
+      const c=hcls(r,ph.bench),ic=c==='g'?'✅':c==='w'?'⚠️':'🔴';
+      let m='';
+      if(c==='g')m=`Tasa: <strong>${fmtP(r)}</strong>. ¡Bien! Benchmark: ${ph.benchLabel}.`;
+      else if(c==='w')m=`Tasa: <strong>${fmtP(r)}</strong>. Hay margen de mejora. Benchmark: ${ph.benchLabel}.`;
+      else m=`Tasa: <strong>${fmtP(r)}</strong>. Fuga importante. El benchmark está en ${ph.benchLabel}.`;
+      ins=`<div class="ins ${c||'i'}"><span class="ins-i">${ic}</span><div>${m}</div></div>`;
+    }
+  }
+  app.innerHTML=`
+  <div class="hdr" style="margin-bottom:20px">
+    <div class="logo">Lidera tu Negocio</div>
+    <h1 style="font-size:clamp(18px,4vw,26px)">Tu proceso <span>comercial</span></h1>
+  </div>
+  <div class="card">
+    <div class="prog"><div class="prog-fill" style="width:${pct}%"></div></div>
+    <div class="body">
+      <div class="badge">Pregunta ${S.idx+1} de ${PHASES.length}</div>
+      <span class="p-icon">${ph.icon}</span>
+      <div class="p-title">${ph.name}</div>
+      <div class="p-desc">${ph.question}</div>
+      <p class="p-sub">${ph.desc}</p>
+      <div class="where"><div class="where-ttl">🔍 ¿Dónde encuentro este dato?</div>${ph.where}</div>
+      <div class="field">
+        <label>Tu número este mes</label>
+        <input class="inp" id="pv" type="number" min="0" placeholder="${ph.placeholder}" value="${d.v!==null?d.v:''}" />
+      </div>
+      ${ph.priceInput?`<div class="field"><label>${ph.priceLabel}</label><input class="inp" id="pp" type="number" min="0" placeholder="${ph.pricePlaceholder}" value="${d.price!==null?d.price:''}" /></div>`:''}
+      <div id="ibox">${ins}</div>
+      ${d.v!==null?`<div class="tip">💡 ${ph.tip}</div>`:''}
+    </div>
+    <div class="foot">
+      <div class="btn-row">
+        <button class="btn btn-s" id="bk">${S.idx===0?'← Inicio':'← Anterior'}</button>
+        <button class="btn btn-p" id="nx">${S.idx<PHASES.length-1?'Siguiente →':'Ver mi diagnóstico →'}</button>
+      </div>
+    </div>
+  </div>`;
+  const inp=document.getElementById('pv'),pp=document.getElementById('pp');
+  inp.addEventListener('input',()=>{
+    S.data[S.idx].v=parseFloat(inp.value)||null;
+    inp.style.borderColor='';
+    const warn=document.getElementById('overWarn');
+    if(warn)warn.remove();
+    reIns(ph);
+  });
+  if(pp)pp.addEventListener('input',()=>{S.data[S.idx].price=parseFloat(pp.value)||null;});
+  document.getElementById('bk').onclick=()=>{if(S.idx===0){S.screen='intro';render();}else{S.idx--;render();}};
+  document.getElementById('nx').onclick=()=>{
+    const val=parseFloat(inp.value);
+    if(isNaN(val)||val<0){inp.focus();inp.style.borderColor='var(--danger)';return;}
+    // Can't have more in this phase than the previous phase
+    if(S.idx>0 && v(S.idx-1)>0 && val>v(S.idx-1)){
+      inp.style.borderColor='var(--warning)';
+      const prev=v(S.idx-1);
+      let warn=document.getElementById('overWarn');
+      if(!warn){
+        warn=document.createElement('div');
+        warn.id='overWarn';
+        warn.className='ins w';
+        warn.style.marginTop='8px';
+        inp.parentNode.insertBefore(warn,inp.nextSibling);
+      }
+      warn.innerHTML=`<span class="ins-i">⚠️</span><div>Este número no puede ser mayor que el de la fase anterior (<strong>${fmt(prev)}</strong>). Corrige el dato o el anterior.</div>`;
+      return;
+    }
+    S.data[S.idx].v=val;
+    if(pp)S.data[S.idx].price=parseFloat(pp.value)||null;
+    if(S.idx<PHASES.length-1){S.idx++;render();}else{S.screen='diagnostic';render();}
+  };
+  inp.focus();
+}
+
+function reIns(ph){
+  const box=document.getElementById('ibox');
+  if(!box)return;
+  const d=S.data[S.idx];
+  if(d.v===null){box.innerHTML='';return;}
+  const r=rate(S.idx);
+  let html='';
+  if(S.idx===0){html=`<div class="ins i"><span class="ins-i">📊</span><div>Tu punto de partida: <strong>${fmt(d.v)} leads</strong> este mes.</div></div>`;}
+  else if(r!==null){
+    // rate() already capped at 1.0, but guard display too
+    const cappedR = Math.min(1, r);
+    const c=hcls(cappedR,ph.bench),ic=c==='g'?'✅':c==='w'?'⚠️':'🔴';
+    let m='';
+    if(c==='g')m=`Tasa: <strong>${fmtP(cappedR)}</strong>. ¡Bien! Benchmark: ${ph.benchLabel}.`;
+    else if(c==='w')m=`Tasa: <strong>${fmtP(cappedR)}</strong>. Margen de mejora. Benchmark: ${ph.benchLabel}.`;
+    else m=`Tasa: <strong>${fmtP(cappedR)}</strong>. Fuga importante. Benchmark: ${ph.benchLabel}.`;
+    html=`<div class="ins ${c||'i'}"><span class="ins-i">${ic}</span><div>${m}</div></div>`;
+  }
+  box.innerHTML=html;
+}
+
+/* ─── DIAGNOSTIC ─── */
+function rDiag(){
+  const leads=v(0),cerr=v(5),px=p(5),rev=revenue(),lost=moneyLost();
+  const pctLost=leads>0?Math.round((1-cerr/leads)*100):0;
+  const leakF=leakFollowup(),leakP=leakPresup();
+  const r3=simRev(3)||0,r10=simRev(10)||0,r20=simRev(20)||0;
+
+  const fRows=[
+    {l:'Leads recibidos',  n:leads, r:null,        b:null},
+    {l:'Primer contacto',  n:v(1),  r:rate(1),     b:0.80},
+    {l:'Segunda llamada',  n:v(2),  r:rate(2),     b:0.70},
+    {l:'Presupuesto env.', n:v(3),  r:rate(3),     b:0.60},
+    {l:'Seguim. presup.',  n:v(4),  r:rate(4),     b:0.80},
+    {l:'Ventas cerradas',  n:cerr,  r:rate(5),     b:0.35},
+    {l:'Post-venta',       n:v(6),  r:rate(6),     b:0.80},
+  ];
+
+  app.innerHTML=`
+  <div class="hdr" style="margin-bottom:22px">
+    <div class="logo">Lidera tu Negocio</div>
+    <h1 style="font-size:clamp(18px,4vw,26px)">Tu diagnóstico <span>comercial</span></h1>
+  </div>
+  <div class="card">
+    <div class="prog"><div class="prog-fill" style="width:88%"></div></div>
+    <div class="body">
+
+      <div class="diag-hero">
+        <span class="dh-emoji">${pctLost>70?'🚨':pctLost>40?'⚠️':'📊'}</span>
+        <div class="dh-pct">${pctLost}%</div>
+        <div class="dh-lbl">de tus leads no se convierten en clientes</div>
+        <div class="dh-sub">
+          De cada <strong>${leads}</strong> leads que llegan, solo <strong>${cerr}</strong> acaban contratando.<br>
+          ${lost>0?`Solo mejorando el seguimiento podrías recuperar hasta <strong style="color:var(--danger)">${fmtE(lost)}</strong> al mes.`:''}
+        </div>
+      </div>
+
+      <div class="sec">Tu embudo paso a paso</div>
+      ${fRows.map(row=>{
+        const pct2=leads>0?Math.min(100,(row.n/leads)*100):0;
+        const clr=row.b?hclr(row.r,row.b):'var(--accent)';
+        const cls=row.b?hcls(row.r,row.b):'';
+        return `<div class="funnel-row">
+          <div class="fdot" style="background:${clr}"></div>
+          <div class="flbl">${row.l}</div>
+          <div class="fbar-w"><div class="fbar" style="width:${pct2}%;background:${clr}20;border-left:3px solid ${clr}">
+            <span style="color:${clr}">${fmt(row.n)}</span></div></div>
+          <div class="frate ${cls}">${row.r!==null?fmtP(row.r):'—'}</div>
+        </div>`;
+      }).join('')}
+
+      ${(leakF>0||leakP>0)?`
+      <div class="sec">Las fugas que más te cuestan</div>
+      ${leakF>0?`<div class="leak">
+        <div class="leak-n"><div class="ln-lbl">Fuga</div><div class="ln-v">${leakF}</div></div>
+        <div>
+          <div class="lb-ttl">Leads sin segunda llamada</div>
+          <div class="lb-txt">Contactaste a <strong>${fmt(v(2))}</strong> leads por segunda vez, pero deberías llegar a <strong>${fmt(Math.round(v(1)*.70))}</strong>. Eso son <strong>${leakF} oportunidades que se enfriaron</strong> porque nadie volvió a intentarlo.</div>
+          ${px?`<div class="lb-money">💸 Si la mitad hubieran cerrado al precio medio: ${fmtE(Math.round(leakF*.5*(cerr/(v(4)||1))*px))}</div>`:''}
+        </div>
+      </div>`:''}
+      ${leakP>0?`<div class="leak">
+        <div class="leak-n"><div class="ln-lbl">Fuga</div><div class="ln-v">${leakP}</div></div>
+        <div>
+          <div class="lb-ttl">Presupuestos sin seguimiento</div>
+          <div class="lb-txt">Enviaste <strong>${fmt(v(3))}</strong> presupuestos pero solo hiciste seguimiento de <strong>${fmt(v(4))}</strong>. Los otros <strong>${leakP} quedaron en el limbo</strong>: el cliente los recibió y nadie llamó para preguntar qué le pareció.</div>
+          ${px&&cerr&&v(4)?`<div class="lb-money">💸 A tu tasa de cierre actual esos presupuestos sin seguimiento valen: ${fmtE(Math.round(leakP*(cerr/(v(4)||1))*px))}</div>`:''}
+        </div>
+      </div>`:''}
+      `:''}
+
+      <div class="sec">Simulador: mueve los sliders y ve el impacto</div>
+      <p style="font-size:13px;color:var(--text-muted);line-height:1.65;margin-bottom:16px">
+        Sin más publicidad ni más leads. Arrastra cada slider para ver cuánto ganarías mejorando esa fase de tu proceso:
+      </p>
+
+      <!-- REVENUE HERO LIVE -->
+      <div id="simHero" style="
+        background:linear-gradient(135deg,rgba(34,211,163,.1),rgba(62,43,134,.15));
+        border:1px solid rgba(34,211,163,.3);border-radius:14px;
+        padding:18px;text-align:center;margin-bottom:20px;transition:all .3s;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:#a7f3d0;margin-bottom:4px">Proyección de ventas mensuales</div>
+        <div style="display:flex;align-items:baseline;justify-content:center;gap:16px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:2px">Ahora</div>
+            <div style="font-size:22px;font-weight:800;color:var(--text-muted)">${fmtE(rev)}</div>
+          </div>
+          <div style="font-size:24px;color:var(--success)">→</div>
+          <div>
+            <div style="font-size:11px;color:var(--success);margin-bottom:2px">Con mejoras</div>
+            <div id="simRev" style="font-size:32px;font-weight:800;color:var(--success)">${fmtE(rev)}</div>
+          </div>
+        </div>
+        <div id="simDiff" style="font-size:14px;color:#a7f3d0;margin-top:6px;font-weight:600"></div>
+        <div id="simCerradas" style="font-size:12px;color:var(--text-muted);margin-top:4px"></div>
+      </div>
+
+      <!-- INTERACTIVE FUNNEL -->
+      <div id="funnelSim"></div>
+
+      <div class="callout" style="margin-top:20px">
+        <span class="ce">💡</span>
+        <div class="ct">La buena noticia</div>
+        <div class="cb">No necesitas más inversión en publicidad ni más leads. <strong>Los clientes ya están llegando.</strong> El dinero que estás perdiendo está en el proceso, no en la captación.</div>
+      </div>
+
+    </div>
+    <div class="foot">
+      <div class="btn-row">
+        <button class="btn btn-s" id="bk">← Editar mis datos</button>
+        <button class="btn btn-p" id="nx">¿Cómo lo mejoro? →</button>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('bk').onclick=()=>{S.idx=PHASES.length-1;S.screen='phases';render();};
+  document.getElementById('nx').onclick=()=>{S.screen='lead';render();};
+
+  // ── Build interactive funnel ──
+  const SIM_PHASES = [
+    { idx:0, label:'Leads recibidos',    icon:'📥', canImprove:false },
+    { idx:1, label:'Primer contacto',    icon:'⚡', canImprove:true  },
+    { idx:2, label:'Segunda llamada',    icon:'🔄', canImprove:true  },
+    { idx:3, label:'Presupuesto env.',   icon:'📄', canImprove:true  },
+    { idx:4, label:'Seguim. presup.',    icon:'📞', canImprove:true  },
+    { idx:5, label:'Ventas cerradas',    icon:'✅', canImprove:true  },
+    { idx:6, label:'Post-venta',         icon:'🌟', canImprove:true  },
+  ];
+
+  // improvement state: per-phase %, 0 = no change
+  const improvements = SIM_PHASES.map(()=>0);
+
+  function calcSim() {
+    const px = p(5);
+    if (!px) return { vals: SIM_PHASES.map(sp=>v(sp.idx)), cerradas: v(5), revenue: revenue() };
+    // cascade from leads
+    let vals = SIM_PHASES.map(sp=>v(sp.idx));
+    for (let i=1; i<SIM_PHASES.length; i++) {
+      const origPrev = v(SIM_PHASES[i-1].idx);
+      const origCurr = v(SIM_PHASES[i].idx);
+      if (!origPrev) continue;
+      const origRate = origCurr / origPrev;
+      const imp = improvements[i] || 0;
+      const newRate = Math.min(1, origRate * (1 + imp/100));
+      vals[i] = vals[i-1] * newRate;
+    }
+    const cerradas = vals[5];
+    return { vals, cerradas, revenue: Math.round(cerradas * px) };
+  }
+
+  // Debounce + RAF: only recalculate when user stops moving slider
+  let _rafPending = false;
+  let _debounceTimer = null;
+
+  function scheduleUpdate() {
+    clearTimeout(_debounceTimer);
+    _debounceTimer = setTimeout(() => {
+      if (!_rafPending) {
+        _rafPending = true;
+        requestAnimationFrame(() => {
+          _rafPending = false;
+          updateSim();
+        });
+      }
+    }, 30); // 30ms debounce — smooth but not laggy
+  }
+
+  function updateSim() {
+    const { vals, cerradas, revenue: simRevenue } = calcSim();
+    const base = vals[0] || 1;
+    const px = p(5);
+    const diff = simRevenue - rev;
+
+    // Update hero text only (no innerHTML, no layout thrash)
+    const revEl  = document.getElementById('simRev');
+    const diffEl = document.getElementById('simDiff');
+    const cerrEl = document.getElementById('simCerradas');
+    if (revEl)  revEl.textContent = fmtE(simRevenue);
+    if (diffEl) diffEl.textContent = diff > 0 ? `+${fmtE(diff)} adicionales al mes` : 'Sin cambio aún';
+    if (cerrEl) cerrEl.textContent = `${cerradas.toFixed(1)} ventas estimadas · Precio medio ${fmtE(px)}`;
+
+    // Update only bar widths (no innerHTML on bars)
+    SIM_PHASES.forEach((sp, i) => {
+      const bar   = document.getElementById(`fbar_${i}`);
+      const numEl = document.getElementById(`fnum_${i}`);
+      if (!bar) return;
+      const origN = v(sp.idx);
+      const newN  = vals[i];
+      const newW  = Math.max(2, (newN / base) * 100);
+      bar.style.width = newW + '%';
+      if (numEl) {
+        const gain = newN - origN;
+        if (gain > 0.05) {
+          numEl.textContent = '';
+          const span1 = document.createElement('span');
+          span1.style.color = 'var(--text-muted)';
+          span1.textContent = fmt(origN);
+          const span2 = document.createElement('span');
+          span2.style.cssText = 'color:var(--success);font-weight:700';
+          span2.textContent = ' → ' + fmt(newN);
+          numEl.appendChild(span1);
+          numEl.appendChild(span2);
+        } else {
+          numEl.textContent = fmt(origN);
+        }
+      }
+    });
+  }
+
+  function buildFunnel() {
+    const base = v(0) || 1;
+    const container = document.getElementById('funnelSim');
+    if (!container) return;
+
+    container.innerHTML = SIM_PHASES.map((sp, i) => {
+      const origN = v(sp.idx);
+      const origW = Math.max(2, (origN / base) * 100);
+      const origRate = rate(sp.idx);
+      const hasBench = sp.idx > 0 && PHASES[sp.idx]?.bench;
+      const clr = hasBench ? hclr(origRate, PHASES[sp.idx].bench) : 'var(--accent)';
+
+      return `
+      <div style="margin-bottom:${sp.canImprove?'4px':'10px'}">
+        <!-- Phase bar -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <div style="width:100px;font-size:11px;font-weight:600;color:var(--text);flex-shrink:0;line-height:1.3">${sp.icon} ${sp.label}</div>
+          <div style="flex:1;position:relative;height:28px;background:rgba(255,255,255,.04);border-radius:6px;overflow:hidden">
+            <!-- original (ghost) -->
+            <div id="fbar_orig_${i}" style="position:absolute;left:0;top:0;height:100%;width:${origW}%;
+              background:rgba(255,255,255,.06);border-radius:6px;transition:width .4s cubic-bezier(.4,0,.2,1)"></div>
+            <!-- improved -->
+            <div id="fbar_${i}" style="position:absolute;left:0;top:0;height:100%;width:${origW}%;
+              background:${clr}22;border-left:3px solid ${clr};border-radius:6px;
+              transition:width .4s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;padding-left:8px">
+            </div>
+          </div>
+          <div id="fnum_${i}" style="width:90px;font-size:12px;text-align:right;flex-shrink:0">
+            <span>${fmt(origN)}</span>
+          </div>
+        </div>
+        <!-- Slider -->
+        ${sp.canImprove ? `
+        <div style="display:flex;align-items:center;gap:8px;padding-left:108px;margin-bottom:8px">
+          <input type="range" min="0" max="100" step="1" value="0" id="sl_${i}"
+            style="-webkit-appearance:none;flex:1;height:4px;background:var(--border);border-radius:2px;outline:none;cursor:pointer">
+          <div id="slv_${i}" style="width:36px;font-size:12px;font-weight:700;color:var(--accent);text-align:right;flex-shrink:0">+0%</div>
+        </div>` : '<div style="height:4px"></div>'}
+        ${i < SIM_PHASES.length-1 ? `<div style="margin-left:108px;height:10px;border-left:2px dashed rgba(255,255,255,.08)"></div>` : ''}
+      </div>`;
+    }).join('');
+
+    // Wire sliders
+    SIM_PHASES.forEach((sp, i) => {
+      if (!sp.canImprove) return;
+      const sl  = document.getElementById(`sl_${i}`);
+      const slv = document.getElementById(`slv_${i}`);
+      if (!sl) return;
+
+      // Style thumb
+      sl.style.cssText += `;--thumb-color:var(--accent)`;
+
+      sl.addEventListener('input', () => {
+        const val = parseInt(sl.value);
+        improvements[i] = val;
+        if (slv) slv.textContent = `+${val}%`;
+        // Update track color (cheap, no layout)
+        sl.style.background = val > 0
+          ? `linear-gradient(to right,var(--accent) 0%,var(--accent) ${val}%,var(--border) ${val}%,var(--border) 100%)`
+          : 'var(--border)';
+        scheduleUpdate(); // debounced — won't freeze browser
+      });
+      // Also fire on mouseup/touchend to guarantee final value is always shown
+      sl.addEventListener('change', () => {
+        clearTimeout(_debounceTimer);
+        updateSim();
+      });
+    });
+
+    // Add global slider thumb style
+    const style = document.createElement('style');
+    style.textContent = `
+      input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+        background:var(--accent);cursor:pointer;box-shadow:0 0 8px rgba(238,70,188,.5);
+        transition:transform .1s;
+      }
+      input[type=range]::-webkit-slider-thumb:active { transform:scale(1.3); }
+      input[type=range]::-moz-range-thumb {
+        width:18px;height:18px;border-radius:50%;border:none;
+        background:var(--accent);cursor:pointer;
+      }
+    `;
+    document.head.appendChild(style);
+
+    updateSim();
+  }
+
+  buildFunnel();
+}
+
+/* ─── LEAD ─── */
+function rLead(){
+  app.innerHTML=`
+  <div class="hdr" style="margin-bottom:22px">
+    <div class="logo">Lidera tu Negocio</div>
+    <h1 style="font-size:clamp(18px,4vw,26px)">¿Te ayudamos a<br><span>solucionarlo gratis?</span></h1>
+  </div>
+  <div class="card">
+    <div class="prog"><div class="prog-fill" style="width:96%"></div></div>
+    <div class="body">
+      <div class="badge">Sesión gratuita</div>
+      <span class="p-icon">🎯</span>
+      <div class="p-title">40 minutos de consultoría sin coste</div>
+      <div class="lead-intro">
+        Revisamos juntos tu proceso comercial y te damos ideas concretas para mejorar cada punto del embudo.<br><br>
+        <strong>Sin compromiso. Sin venta disfrazada.</strong> Solo estrategia real adaptada a tu negocio y a tus recursos actuales.
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="field"><label>Tu nombre</label>
+          <input class="inp" id="ln" placeholder="Nombre y apellidos..." value="${S.lead.name}" /></div>
+        <div class="field"><label>Email</label>
+          <input class="inp" id="le" type="email" placeholder="tu@email.com" value="${S.lead.email}" /></div>
+        <div class="field"><label>Teléfono</label>
+          <input class="inp" id="lt" type="tel" placeholder="+34 600 000 000" value="${S.lead.phone}" /></div>
+        <button class="btn btn-p" style="padding:15px;font-size:15px" id="sub">Quiero la consultoría gratuita →</button>
+      </div>
+      <button class="skip-btn" id="skip">No, gracias. Solo quiero ver el diagnóstico completo</button>
+    </div>
+  </div>`;
+
+  document.getElementById('sub').onclick=async()=>{
+    const name=document.getElementById('ln').value.trim();
+    if(!name){document.getElementById('ln').focus();document.getElementById('ln').style.borderColor='var(--danger)';return;}
+    S.lead={name,email:document.getElementById('le').value.trim(),phone:document.getElementById('lt').value.trim()};
+    // Enviar a GHL y email en paralelo, sin bloquear la UI
+    sendToGHL();
+    sendEmail();
+    S.screen='thanks';render();
+  };
+  document.getElementById('skip').onclick=()=>{
+    // Aunque salte, enviamos email interno con el diagnóstico
+    sendEmail();
+    S.screen='thanks';render();
+  };
+}
+
+/* ─── THANKS ─── */
+function rThanks(){
+  const name=S.lead.name?S.lead.name.split(' ')[0]:'';
+  app.innerHTML=`
+  <div class="hdr" style="margin-bottom:22px"><div class="logo">Lidera tu Negocio</div></div>
+  <div class="card">
+    <div class="prog"><div class="prog-fill" style="width:100%"></div></div>
+    <div class="body">
+      <div class="thanks">
+        <span class="ti">${name?'🎉':'📊'}</span>
+        <div class="tt">${name?`¡Perfecto, ${name}!`:'Tu diagnóstico completo'}</div>
+        <div class="tb">${name?'Hemos recibido tus datos. Te contactamos en menos de 24 horas para agendar tu sesión.':'Aquí tienes tu análisis detallado y la proyección de mejora.'}</div>
+      </div>
+      <div class="book-block">
+        <p>${name?'Si prefieres elegir tú el horario ahora mismo, aquí puedes hacerlo:':'¿Quieres que revisemos juntos cómo mejorar tu sistema de ventas?'}<br><strong>Auditoría de Conversión de Leads gratuita — 40 minutos.</strong></p>
+        <button class="btn-book" onclick="window.open('${BOOKING_URL}','_blank')">Elegir mi horario →</button><br>
+        <button class="btn-dl" id="dlBtn">⬇ Descargar mi diagnóstico</button>
+      </div>
+      <div class="ai-block">
+        <div class="ai-lbl">Análisis personalizado</div>
+        <div id="aiZone"><div class="gen"><div class="spin"></div> Generando tu análisis con IA…</div></div>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('dlBtn').onclick=dlReport;
+  genAI().then(()=>sendEmail());
+}
+
+/* ═══ AI ═══ */
+async function genAI(){
+  const leads=v(0),cerr=v(5),px=p(5),rev=revenue(),lost=moneyLost();
+  const lF=leakFollowup(),lP=leakPresup();
+  const prompt=`Eres un consultor experto en procesos comerciales y ventas de servicios para PYMEs.
+
+Datos del diagnóstico${S.lead.name?' de '+S.lead.name:''}:
+- Leads recibidos/mes: ${v(0)}
+- Contactados en <24h: ${v(1)} (${fmtP(rate(1))})
+- Con segunda llamada de seguimiento: ${v(2)} (${fmtP(rate(2))})
+- Presupuestos enviados: ${v(3)} (${fmtP(rate(3))})
+- Presupuestos con seguimiento posterior: ${v(4)} (${fmtP(rate(4))})
+- Ventas cerradas: ${v(5)} · Valor medio: €${px} · Ingresos: €${rev}
+- Clientes con post-venta activo: ${v(6)} (${fmtP(rate(6))})
+- Leads perdidos por falta de seguimiento: ${lF+lP}
+- Dinero recuperable con mejor seguimiento: €${lost}
+
+Genera un diagnóstico directo y accionable en español:
+
+**Diagnóstico**
+2-3 frases precisas sobre su situación. Menciona números reales de su caso.
+
+**Los dos puntos donde más dinero se pierde**
+Con impacto económico estimado en cada uno.
+
+**Tres acciones concretas para esta semana**
+Acciones que pueden implementar en 7 días sin herramientas nuevas ni inversión.
+
+Tono: directo, sin relleno, como un consultor de confianza. Máximo 220 palabras.`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    const data=await res.json();
+    S.aiText=data?.content?.[0]?.text||'';
+  }catch(e){S.aiText='';}
+
+  if(!S.aiText){
+    S.aiText=`**Diagnóstico**\nTu embudo tiene una tasa de conversión del ${fmtP(v(0)>0?v(5)/v(0):0)}, lo que indica que la mayor parte del trabajo se está haciendo en captación pero no en seguimiento. El dinero no se está perdiendo por falta de leads, sino por falta de sistema.\n\n**Los dos puntos donde más dinero se pierde**\nEl seguimiento posterior al presupuesto es el mayor punto de fuga. Los leads reciben la propuesta y no vuelven a saber de ti. A tu tasa de cierre actual, cada presupuesto sin seguimiento tiene un coste real de euros no ingresados.\n\n**Tres acciones para esta semana**\n1. Pon una alarma 48h después de cada presupuesto enviado para llamar al cliente y preguntar qué le pareció.\n2. Crea una plantilla de WhatsApp para el seguimiento: "Hola [nombre], quería saber si has tenido tiempo de revisar la propuesta y si tienes alguna duda."\n3. Empieza a registrar cada lead en una hoja de cálculo con su estado actual. Sin datos, no hay mejora posible.`;
+  }
+
+  const zone=document.getElementById('aiZone');
+  if(!zone)return;
+  const formatted=S.aiText.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  zone.innerHTML=`<div class="ai-txt">${formatted}</div>`;
+}
+
+/* ═══ GHL WEBHOOK ═══ */
+async function sendToGHL(){
+  if(!GHL_WEBHOOK)return;
+  try{
+    await fetch(GHL_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        firstName: S.lead.name.split(' ')[0] || S.lead.name,
+        lastName:  S.lead.name.split(' ').slice(1).join(' ') || '',
+        email:     S.lead.email||'',
+        phone:     S.lead.phone||'',
+        tags:      ['Calculadora SVD', 'Diagnóstico Comercial'],
+        source:    'Calculadora SVD — LideraTuNegocio.com',
+        customField: {
+          ingresos_actuales:   fmtE(revenue()),
+          dinero_recuperable:  fmtE(moneyLost()),
+          tasa_conversion:     fmtP(v(0)>0?v(5)/v(0):0)
+        }
+      })
+    });
+  }catch(e){console.error('GHL error:',e);}
+}
+
+/* ═══ EMAIL ═══ */
+async function sendEmail(){
+  if(!WEB3FORMS_KEY)return;
+  const rev=revenue(),lost=moneyLost();
+  const hasLead=!!(S.lead.name||S.lead.email);
+  const rows=PHASES.map((ph,i)=>`<tr>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px">${ph.icon} ${ph.name}</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:center">${fmt(v(i))}</td>
+    <td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;text-align:center">${rate(i)!==null?fmtP(rate(i)):'—'}</td>
+  </tr>`).join('');
+  const contactInfo = hasLead ? `
+    <tr><td style="padding:5px 0;font-size:14px;color:#555"><strong>Nombre:</strong></td><td>${S.lead.name||'—'}</td></tr>
+    <tr><td style="padding:5px 0;font-size:14px;color:#555"><strong>Email:</strong></td><td>${S.lead.email||'—'}</td></tr>
+    <tr><td style="padding:5px 0;font-size:14px;color:#555"><strong>Teléfono:</strong></td><td>${S.lead.phone||'—'}</td></tr>` :
+    `<tr><td colspan="2" style="padding:5px 0;font-size:13px;color:#999;font-style:italic">Usuario no dejó datos de contacto</td></tr>`;
+  const aiSection = S.aiText ? `
+    <h3 style="font-size:14px;margin:20px 0 10px;color:#1a0f2e">Análisis IA generado</h3>
+    <div style="background:#fff;border:1px solid #e0d8f5;border-radius:8px;padding:16px;font-size:13px;line-height:1.75;color:#333;white-space:pre-wrap">${S.aiText}</div>` : '';
+  const body=`<div style="font-family:sans-serif;max-width:600px;margin:0 auto">
+    <div style="background:#1a0f2e;padding:24px;border-radius:12px 12px 0 0">
+      <h2 style="color:#ee46bc;margin:0">${hasLead?'🎯 Nuevo lead':'📊 Diagnóstico anónimo'} — Calculadora Seguimiento</h2>
+      <p style="color:#a08abf;margin:8px 0 0;font-size:14px">Lidera tu Negocio</p>
+    </div>
+    <div style="background:#f8f5ff;padding:24px;border-radius:0 0 12px 12px;border:1px solid #e8e0f5">
+      <table style="width:100%;border-collapse:collapse;margin-bottom:20px">
+        ${contactInfo}
+        <tr><td style="padding:5px 0;font-size:14px;color:#555"><strong>Ingresos actuales:</strong></td><td><strong style="color:#ee46bc">${fmtE(rev)}</strong></td></tr>
+        <tr><td style="padding:5px 0;font-size:14px;color:#555"><strong>Recuperable:</strong></td><td><strong style="color:#f43f5e">${fmtE(lost)}</strong></td></tr>
+        <tr><td style="padding:5px 0;font-size:14px;color:#555"><strong>Tasa conversión:</strong></td><td>${fmtP(v(0)>0?v(5)/v(0):0)}</td></tr>
+        <tr><td style="padding:5px 0;font-size:14px;color:#555"><strong>Fecha:</strong></td><td>${new Date().toLocaleString('es-ES')}</td></tr>
+      </table>
+      <h3 style="font-size:14px;margin:0 0 10px;color:#1a0f2e">Datos del embudo</h3>
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="background:#1a0f2e">
+          <th style="padding:8px 10px;color:#ee46bc;font-size:12px;text-align:left">Fase</th>
+          <th style="padding:8px 10px;color:#ee46bc;font-size:12px;text-align:center">Valor</th>
+          <th style="padding:8px 10px;color:#ee46bc;font-size:12px;text-align:center">Tasa</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      ${aiSection}
+    </div>
+  </div>`;
+  const subject = hasLead
+    ? `🎯 Lead — ${S.lead.name} · ${fmtE(rev)} actuales · ${fmtE(lost)} recuperables`
+    : `📊 Diagnóstico anónimo · ${fmtE(rev)} actuales · ${fmtE(lost)} recuperables`;
+  try{
+    await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({access_key:WEB3FORMS_KEY,subject,
+        from_name:`SVD — ${S.lead.name||'Anónimo'}`,message:body,html:true})});
+  }catch(e){console.error(e);}
+}
+
+/* ═══ DOWNLOAD ═══ */
+function dlReport(){
+  const rev=revenue(),lost=moneyLost(),r3=simRev(3)||0,r10=simRev(10)||0;
+  const pctLost=v(0)>0?Math.round((1-v(5)/v(0))*100):0;
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Diagnóstico SVD</title>
+  <style>body{font-family:'Segoe UI',Arial,sans-serif;max-width:680px;margin:40px auto;color:#1a1a2e;padding:20px;}
+  h1{color:#ee46bc;font-size:22px;margin-bottom:4px;}.sub{color:#888;font-size:13px;margin-bottom:24px;}
+  .hero{background:#fff5f5;border:2px solid #f43f5e;border-radius:12px;padding:20px;text-align:center;margin-bottom:24px;}
+  .hero .pct{font-size:48px;font-weight:900;color:#f43f5e;line-height:1;}.hero .lbl{font-size:15px;font-weight:700;margin-top:6px;}
+  .stitle{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#888;margin:24px 0 10px;border-bottom:1px solid #eee;padding-bottom:6px;}
+  table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+  th{background:#1a0f2e;color:#ee46bc;padding:8px 12px;font-size:11px;text-align:left;}
+  td{padding:8px 12px;border-bottom:1px solid #eee;font-size:13px;}
+  .g{color:#059669;font-weight:700;}.r{color:#f43f5e;font-weight:700;}
+  .ai{background:#f8f5ff;border:1px solid #e0d8f5;border-radius:10px;padding:16px;font-size:13px;line-height:1.75;white-space:pre-wrap;}
+  @media print{body{margin:10px;}}</style></head><body>
+  <h1>Diagnóstico de Proceso Comercial — Seguimiento de Leads</h1>
+  <div class="sub">LideraTuNegocio.com · ${new Date().toLocaleDateString('es-ES')}</div>
+  <div class="hero">
+    <div class="pct">${pctLost}%</div>
+    <div class="lbl">de los leads no se convierten en clientes</div>
+    <div style="font-size:13px;color:#666;margin-top:8px">Ingresos actuales: <strong>${fmtE(rev)}</strong> · Recuperable con mejor seguimiento: <strong>${fmtE(lost)}</strong></div>
+  </div>
+  <div class="stitle">Datos del embudo</div>
+  <table><thead><tr><th>Fase</th><th>Valor</th><th>Tasa</th></tr></thead><tbody>
+  ${PHASES.map((ph,i)=>`<tr><td>${ph.icon} ${ph.name}</td><td>${fmt(v(i))}</td><td>${rate(i)!==null?fmtP(rate(i)):'—'}</td></tr>`).join('')}
+  </tbody></table>
+  <div class="stitle">Proyección de mejora</div>
+  <table><thead><tr><th>Escenario</th><th>Ventas</th><th>Diferencia</th></tr></thead><tbody>
+  <tr><td>Situación actual</td><td>${fmtE(rev)}</td><td>—</td></tr>
+  <tr><td>+3% en seguimiento</td><td>${fmtE(r3)}</td><td class="g">+${fmtE(r3-rev)}</td></tr>
+  <tr><td>+10% en seguimiento</td><td>${fmtE(r10)}</td><td class="g">+${fmtE(r10-rev)}</td></tr>
+  </tbody></table>
+  ${S.aiText?`<div class="stitle">Análisis personalizado</div><div class="ai">${S.aiText}</div>`:''}
+  <p style="margin-top:30px;font-size:11px;color:#aaa;text-align:center">LideraTuNegocio.com · info@lideratunegocio.com</p>
+  </body></html>`;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+  a.download=`diagnostico-seguimiento-${new Date().toISOString().slice(0,10)}.html`;
+  a.click();
+}
+
+render();
+</script>
+</body>
+</html>
