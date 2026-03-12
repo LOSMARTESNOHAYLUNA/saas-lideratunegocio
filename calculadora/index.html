@@ -80,6 +80,8 @@ h1 span{color:var(--accent);}
   line-height:1.65;margin-top:10px;}
 
 .btn-row{display:flex;gap:10px;width:100%;}
+.btn-s{order:2;}
+.btn-p{order:1;}
 .btn{padding:12px 18px;border-radius:10px;font-size:14px;font-family:'Poppins',sans-serif;
   font-weight:700;cursor:pointer;transition:all .18s ease;border:none;white-space:nowrap;}
 .btn-p{background:var(--accent);color:#fff;flex:1;min-width:0;white-space:nowrap;}
@@ -186,7 +188,9 @@ h1 span{color:var(--accent);}
 
 @media(max-width:600px){
   .funnel-row{grid-template-columns:10px 80px 1fr 42px;}
-  .btn-row{flex-direction:column-reverse;}
+  .btn-row{flex-direction:column;}
+  .btn-s{order:2;width:100%;}
+  .btn-p{order:1;width:100%;font-size:16px;padding:15px;}
   .btn-s{order:2;}
   .btn-p{order:1;font-size:16px;padding:15px;}
   .body{padding:18px 16px;}
@@ -360,7 +364,7 @@ const app = document.getElementById('app');
 function v(i)   { return S.data[i]?.v ?? 0; }
 function p(i)   { return S.data[i]?.price ?? 0; }
 function rate(i){ if(i===0||!v(i-1))return null; return Math.min(1, v(i)/v(i-1)); }
-function fmt(n) { if(n===null||n===undefined||isNaN(n))return'—'; return n.toLocaleString('es-ES',{maximumFractionDigits:1}); }
+function fmt(n) { if(n===null||n===undefined||isNaN(n))return'—'; return Math.round(n).toLocaleString('es-ES'); }
 function fmtE(n){ if(!n&&n!==0)return'—'; return '€'+Math.round(n).toLocaleString('es-ES'); }
 function fmtP(n){ if(n===null||isNaN(n))return'—'; return (n*100).toFixed(1)+'%'; }
 function hcls(r,b){ if(!b||r===null)return''; const x=r/b; return x>=.9?'g':x>=.6?'w':'b'; }
@@ -706,41 +710,38 @@ function rDiag(){
 
     // Update number chips and contextual messages
     SIM_PHASES.forEach((sp, i) => {
-      const numEl = document.getElementById(`fnum_${i}`);
-      const msgEl = document.getElementById(`msg_${i}`);
-      const origN = v(sp.idx);
-      const newN  = vals[i];
-      const gain  = Math.round((newN - origN) * 10) / 10;
+      const numEl = document.getElementById('fnum_'  + i);
+      const msgEl = document.getElementById('msg_'   + i);
+      const origN = Math.round(v(sp.idx));
+      const newN  = Math.round(vals[i]);
+      const gain  = newN - origN;
       const pct   = improvements[i] || 0;
 
       if (numEl) {
-        if (gain > 0.05) {
-          numEl.innerHTML = `<span style="color:var(--text-muted);text-decoration:line-through;font-size:13px">${fmt(origN)}</span> <span style="color:var(--success);font-weight:800">${fmt(newN)}</span>`;
+        if (gain > 0) {
+          numEl.innerHTML = '<span style="color:var(--text-muted);text-decoration:line-through;font-size:13px">' + origN + '</span> <span style="color:var(--success);font-weight:800">' + newN + '</span>';
         } else {
-          numEl.innerHTML = `<span style="color:var(--text-muted)">${fmt(origN)}</span>`;
+          numEl.innerHTML = '<span style="color:#fff">' + origN + '</span>';
         }
       }
 
       if (msgEl && sp.canImprove) {
-        const label = sp.label.toLowerCase();
         if (pct === 0) {
           msgEl.style.color = 'var(--text-muted)';
           msgEl.textContent = 'Arrastra para simular una mejora en este paso';
-        } else if (gain <= 0.05) {
+        } else if (gain <= 0) {
           msgEl.style.color = 'var(--text-muted)';
-          msgEl.textContent = `Ya estás al máximo en este paso. No hay margen de mejora.`;
+          msgEl.textContent = 'Ya estás al máximo en este paso, no hay margen de mejora.';
         } else {
           msgEl.style.color = 'var(--success)';
-          const rounded = Math.round(gain * 10) / 10;
-          // Build contextual phrase per phase
           const phrases = {
-            1: `Si mejoras un ${pct}% la velocidad de respuesta, pasarías de atender ${fmt(origN)} leads a ${fmt(newN)} — ${fmt(rounded)} más entrando al proceso.`,
-            2: `Con un ${pct}% más de insistencia en el seguimiento, recuperarías ${fmt(rounded)} leads que ahora se enfrían sin segunda llamada.`,
-            3: `Enviando presupuesto a un ${pct}% más de leads cualificados, llegarías a ${fmt(newN)} propuestas — ${fmt(rounded)} oportunidades más de cerrar.`,
-            4: `Haciendo seguimiento al ${pct}% más de presupuestos enviados, activarías ${fmt(rounded)} conversaciones que ahora quedan en silencio.`,
-            5: `Mejorando el cierre un ${pct}%, pasarías de ${fmt(origN)} a ${fmt(newN)} ventas cerradas este mes.`,
+            1: 'Si mejoras un ' + pct + '% la velocidad de respuesta, pasarías de atender ' + origN + ' leads a ' + newN + ' — ' + gain + ' más entrando al proceso.',
+            2: 'Con un ' + pct + '% más de insistencia en el seguimiento, recuperarías ' + gain + ' leads que ahora se enfrían sin segunda llamada.',
+            3: 'Enviando presupuesto a un ' + pct + '% más de leads cualificados, llegarías a ' + newN + ' propuestas — ' + gain + ' oportunidades más de cerrar.',
+            4: 'Haciendo seguimiento al ' + pct + '% más de presupuestos enviados, activarías ' + gain + ' conversaciones que ahora quedan en silencio.',
+            5: 'Mejorando el cierre un ' + pct + '%, pasarías de ' + origN + ' a ' + newN + ' ventas cerradas este mes.',
           };
-          msgEl.textContent = phrases[sp.idx] || `Mejorarías este paso de ${fmt(origN)} a ${fmt(newN)} (+${fmt(rounded)}).`;
+          msgEl.textContent = phrases[sp.idx] || ('Mejorarías este paso de ' + origN + ' a ' + newN + ' (+' + gain + ').');
         }
       }
     });
@@ -771,104 +772,80 @@ function rDiag(){
         </div>
 
         ${isFixed ? '' : `
-        <!-- Slider -->
-        <div style="margin-bottom:10px">
-          <input type="range" min="0" max="100" step="1" value="0" id="sl_${i}"
-            style="-webkit-appearance:none;width:100%;height:6px;background:var(--border);border-radius:3px;outline:none;cursor:pointer;display:block">
+        <div id="track_${i}" style="position:relative;height:52px;cursor:pointer;display:flex;align-items:center;margin-bottom:10px;touch-action:none;user-select:none;-webkit-user-select:none;">
+          <div style="position:absolute;left:0;right:0;height:10px;background:rgba(255,255,255,.12);border-radius:5px;"></div>
+          <div id="fill_${i}" style="position:absolute;left:0;height:10px;width:0%;background:var(--accent);border-radius:5px;"></div>
+          <div id="thumb_${i}" style="position:absolute;left:0%;width:38px;height:38px;border-radius:50%;background:var(--accent);box-shadow:0 0 18px rgba(238,70,188,.9);border:3px solid rgba(255,255,255,.5);transform:translateX(-50%);pointer-events:none;"></div>
+          <div id="pctlbl_${i}" style="position:absolute;right:4px;top:0;font-size:13px;font-weight:800;color:var(--accent);">+0%</div>
         </div>
-        <!-- Contextual message -->
-        <div id="msg_${i}" style="
-          font-size:15px;line-height:1.6;
-          color:#ffffff;
-          min-height:20px;font-weight:500;
-        ">Arrastra para simular una mejora en este paso</div>
+        <div id="msg_${i}" style="font-size:15px;line-height:1.6;color:var(--text-muted);min-height:20px;font-weight:500;">Arrastra para simular una mejora en este paso</div>
         `}
       </div>`;
     }).join('');
 
-    // Wire sliders
+    // Wire custom div sliders — works on iOS Safari, Android, desktop
     SIM_PHASES.forEach((sp, i) => {
       if (!sp.canImprove) return;
-      const sl  = document.getElementById(`sl_${i}`);
-      if (!sl) return;
+      const track  = document.getElementById('track_'  + i);
+      const fill   = document.getElementById('fill_'   + i);
+      const thumb  = document.getElementById('thumb_'  + i);
+      const pctlbl = document.getElementById('pctlbl_' + i);
+      if (!track) return;
 
-      // Style thumb
-      sl.style.cssText += `;--thumb-color:var(--accent)`;
+      let dragging = false;
+      let startX = 0, startY = 0;
 
-      // MOBILE FIX: use pointer capture for smooth drag, prevent page scroll
-      sl.style.touchAction = 'none';
-      sl.addEventListener('pointerdown', (e) => {
-        sl.setPointerCapture(e.pointerId);
-      });
-      sl.addEventListener('pointermove', (e) => {
-        if (!sl.hasPointerCapture(e.pointerId)) return;
-        e.preventDefault();
-        // Calculate value from pointer position
-        const rect = sl.getBoundingClientRect();
-        const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        const val = Math.round(pct * 100);
-        sl.value = val;
-        sl.dispatchEvent(new Event('input'));
-      }, { passive: false });
-      sl.addEventListener('pointerup', () => {
-        sl.dispatchEvent(new Event('change'));
-      });
-
-      sl.addEventListener('input', () => {
-        const val = parseInt(sl.value);
+      function applyVal(clientX) {
+        const rect = track.getBoundingClientRect();
+        const pct  = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        const val  = Math.round(pct * 100);
         improvements[i] = val;
-        // Update track color (cheap, no layout)
-        sl.style.background = val > 0
-          ? `linear-gradient(to right,var(--accent) 0%,var(--accent) ${val}%,var(--border) ${val}%,var(--border) 100%)`
-          : 'var(--border)';
-        scheduleUpdate(); // debounced — won't freeze browser
-      });
-      // Also fire on mouseup/touchend to guarantee final value is always shown
-      sl.addEventListener('change', () => {
-        clearTimeout(_debounceTimer);
-        updateSim();
-      });
-    });
+        const pctStr = val + '%';
+        fill.style.width  = pctStr;
+        thumb.style.left  = pctStr;
+        pctlbl.textContent = '+' + pctStr;
+        scheduleUpdate();
+      }
 
-    // Add global slider thumb style
-    const style = document.createElement('style');
-    style.textContent = `
-      input[type=range] {
-        touch-action: none;
-        -webkit-tap-highlight-color: transparent;
-        -webkit-appearance: none;
-        appearance: none;
-        height: 8px;
-        border-radius: 4px;
-        outline: none;
-        cursor: pointer;
-      }
-      input[type=range]::-webkit-slider-thumb {
-        -webkit-appearance:none;
-        width:32px;height:32px;border-radius:50%;
-        background:var(--accent);
-        cursor:grab;
-        box-shadow:0 0 12px rgba(238,70,188,.7);
-        border:3px solid rgba(255,255,255,.3);
-        transition:transform .1s, box-shadow .1s;
-      }
-      input[type=range]::-webkit-slider-thumb:active {
-        cursor:grabbing;
-        transform:scale(1.15);
-        box-shadow:0 0 20px rgba(238,70,188,.9);
-      }
-      input[type=range]::-moz-range-thumb {
-        width:32px;height:32px;border-radius:50%;border:3px solid rgba(255,255,255,.3);
-        background:var(--accent);cursor:grab;
-        box-shadow:0 0 12px rgba(238,70,188,.7);
-      }
-      @media(max-width:600px){
-        input[type=range] { height:10px; }
-        input[type=range]::-webkit-slider-thumb { width:38px; height:38px; }
-        input[type=range]::-moz-range-thumb { width:38px; height:38px; }
-      }
-    `;
-    document.head.appendChild(style);
+      // Desktop mouse
+      track.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        applyVal(e.clientX);
+        const onMove = (e2) => applyVal(e2.clientX);
+        const onUp   = () => {
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+          clearTimeout(_debounceTimer); updateSim();
+        };
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+
+      // Mobile touch — only block scroll once we confirm horizontal drag
+      track.addEventListener('touchstart', (e) => {
+        dragging = false;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      }, { passive: true });
+
+      track.addEventListener('touchmove', (e) => {
+        const dx = Math.abs(e.touches[0].clientX - startX);
+        const dy = Math.abs(e.touches[0].clientY - startY);
+        if (!dragging) {
+          // Only start drag if horizontal movement is dominant
+          if (dx < 5 && dy < 5) return;
+          if (dy > dx) return; // vertical scroll — let it pass
+          dragging = true;
+        }
+        e.preventDefault(); // horizontal drag confirmed — block scroll
+        applyVal(e.touches[0].clientX);
+      }, { passive: false });
+
+      track.addEventListener('touchend', () => {
+        if (dragging) { clearTimeout(_debounceTimer); updateSim(); }
+        dragging = false;
+      }, { passive: true });
+    });
 
     updateSim();
   }
